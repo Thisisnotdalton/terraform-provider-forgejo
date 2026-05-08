@@ -17,6 +17,7 @@
             shellHook = ''
                 cd docker && docker compose down -v --remove-orphans && docker compose up -d
                 source access_tokens/env.admin_token
+                export FORGEJO_API_TOKEN
                 cd ../examples
             '';
           };

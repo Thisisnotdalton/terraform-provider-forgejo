@@ -14,5 +14,5 @@ if [ ! -f "$FORGEJO_CONFIG_FILE_PATH" ]; then
   TOKEN_NAME="admin_token"
   TOKEN_FILE_PATH="/access_tokens/env.${TOKEN_NAME}"
   TOKEN=$(su -c "forgejo admin user generate-access-token --raw --username ${ADMIN_USER} --token-name ${TOKEN_NAME}" $FORGEJO_USER)
-  echo "export FORGEJO_API_TOKEN=${TOKEN}" > $TOKEN_FILE_PATH
+  echo "FORGEJO_API_TOKEN=${TOKEN}" > $TOKEN_FILE_PATH
 fi
