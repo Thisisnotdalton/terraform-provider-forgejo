@@ -9,6 +9,7 @@ services:
     volumes:
       - forgejo:/data
       - ./initial_config:/initial_config:ro
+      - ./access_tokens:/access_tokens
     depends_on:
       forgejo_db:
         condition: service_healthy
