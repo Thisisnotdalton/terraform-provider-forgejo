@@ -1,6 +1,6 @@
 services:
   forgejo_bootstrap:
-    image: codeberg.org/forgejo/forgejo:15 # source: https://codeberg.org/forgejo/-/packages/container/forgejo/versions
+    image: data.forgejo.org/forgejo/forgejo:15 # source: https://codeberg.org/forgejo/-/packages/container/forgejo/versions
     container_name: forgejo_bootstrap
     restart: no
     entrypoint: /initial_config/entrypoint.sh
@@ -17,7 +17,7 @@ services:
       - forgejo
 
   forgejo:
-    image: codeberg.org/forgejo/forgejo:15 # source: https://codeberg.org/forgejo/-/packages/container/forgejo/versions
+    image: data.forgejo.org/forgejo/forgejo:15 # source: https://codeberg.org/forgejo/-/packages/container/forgejo/versions
     container_name: forgejo
     restart: always
     volumes:
