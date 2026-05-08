@@ -1,15 +1,43 @@
 services:
+  forgejo_bootstrap:
+    image: data.forgejo.org/forgejo/forgejo:15 # source: https://codeberg.org/forgejo/-/packages/container/forgejo/versions
+    container_name: forgejo_bootstrap
+    restart: no
+    entrypoint: /initial_config/entrypoint.sh
+    env_file:
+      - env.forgejo_bootstrap
+    volumes:
+      - forgejo:/data
+      - ./initial_config:/initial_config:ro
+      - ./access_tokens:/access_tokens
+    depends_on:
+      forgejo_db:
+        condition: service_healthy
+    networks:
+      - forgejo
+
   forgejo:
-    image: codeberg.org/forgejo/forgejo:15 # source: https://codeberg.org/forgejo/-/packages/container/forgejo/versions
+    image: data.forgejo.org/forgejo/forgejo:15 # source: https://codeberg.org/forgejo/-/packages/container/forgejo/versions
     container_name: forgejo
     restart: always
     volumes:
       - forgejo:/data
+      - /etc/localtime:/etc/localtime:ro
     depends_on:
-      - forgejo_db
+      forgejo_db:
+        condition: service_healthy
+      forgejo_bootstrap:
+        condition: service_completed_successfully
     ports:
       - "3000:3000"
       - "2222:22"
+    networks:
+      - forgejo
+    healthcheck:
+      test: [ "CMD", "wget", "--spider", "-q", "http://localhost:3000/api/healthz" ]
+      interval: 1s
+      timeout: 5s
+      retries: 60
 
   forgejo_db:
     image: mariadb:lts
@@ -20,7 +48,17 @@ services:
       - forgejo_db:/var/lib/mysql
     env_file:
       - env.forgejo_db
-
+    networks:
+      - forgejo
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+      interval: 1s
+      timeout: 5s
+      retries: 60
 volumes:
   forgejo:
   forgejo_db:
+networks:
+  forgejo:
+    name: forgejo-backend
+    external: false

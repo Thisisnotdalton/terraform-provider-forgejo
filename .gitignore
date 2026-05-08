@@ -15,6 +15,7 @@ website/node_modules
 .vagrant/
 *.backup
 ./*.tfstate
+*.terraform.lock.hcl
 .terraform/
 *.log
 *.bak
@@ -36,6 +37,7 @@ website/vendor
 
 # Exclude sensitive environment variables
 .env
+/docker/access_tokens/env.admin_token
 
 # Exclude coverage files
 coverage.out
