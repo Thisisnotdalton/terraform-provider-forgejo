@@ -112,6 +112,5 @@ jobs:
       - name: Run acceptance tests
         env:
           TF_ACC: "1"
-          FORGEJO_API_TOKEN: ${{ steps.admin.outputs.token }}
         run: go test -v -cover ./internal/provider/
         timeout-minutes: 10
