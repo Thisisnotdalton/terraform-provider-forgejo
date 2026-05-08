@@ -35,10 +35,9 @@ services:
       - forgejo
     healthcheck:
       test: [ "CMD", "wget", "--spider", "-q", "http://localhost:3000/api/healthz" ]
-      interval: 10s
+      interval: 1s
       timeout: 5s
-      retries: 5
-      start_period: 20s
+      retries: 60
 
   forgejo_db:
     image: mariadb:lts
@@ -53,11 +52,9 @@ services:
       - forgejo
     healthcheck:
       test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
-      start_period: 1m
-      start_interval: 10s
-      interval: 1m
+      interval: 1s
       timeout: 5s
-      retries: 3
+      retries: 60
 volumes:
   forgejo:
   forgejo_db:
